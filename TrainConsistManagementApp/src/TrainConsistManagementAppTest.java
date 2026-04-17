@@ -1,29 +1,60 @@
 import org.junit.jupiter.api.Test;
+import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TrainConsistManagementAppTest {
 
-    @Test
-    void testRegex_ValidTrainID() {
-        assertTrue(TrainConsistManagementApp.validateTrainId("TRN-1234"));
+    private boolean checkSafety(List<GoodsBogie> bogies) {
+        return bogies.stream()
+                .allMatch(b ->
+                        !b.getType().equalsIgnoreCase("Cylindrical") ||
+                                b.getCargo().equalsIgnoreCase("Petroleum")
+                );
     }
 
     @Test
-    void testRegex_InvalidTrainIDFormat() {
-        assertFalse(TrainConsistManagementApp.validateTrainId("TRAIN12"));
-        assertFalse(TrainConsistManagementApp.validateTrainId("TRN12A"));
-        assertFalse(TrainConsistManagementApp.validateTrainId("1234-TRN"));
+    void testSafety_AllBogiesValid() {
+        List<GoodsBogie> list = Arrays.asList(
+                new GoodsBogie("Cylindrical", "Petroleum"),
+                new GoodsBogie("Open", "Coal")
+        );
+
+        assertTrue(checkSafety(list));
     }
 
     @Test
-    void testRegex_ValidCargoCode() {
-        assertTrue(TrainConsistManagementApp.validateCargoCode("PET-AB"));
+    void testSafety_CylindricalWithInvalidCargo() {
+        List<GoodsBogie> list = Arrays.asList(
+                new GoodsBogie("Cylindrical", "Coal")
+        );
+
+        assertFalse(checkSafety(list));
     }
 
     @Test
-    void testRegex_InvalidCargoCodeFormat() {
-        assertFalse(TrainConsistManagementApp.validateCargoCode("PET-ab"));
-        assertFalse(TrainConsistManagementApp.validateCargoCode("PET123"));
-        assertFalse(TrainConsistManagementApp.validateCargoCode("AB-PET"));
+    void testSafety_NonCylindricalBogiesAllowed() {
+        List<GoodsBogie> list = Arrays.asList(
+                new GoodsBogie("Open", "Coal"),
+                new GoodsBogie("Box", "Grain")
+        );
+
+        assertTrue(checkSafety(list));
+    }
+
+    @Test
+    void testSafety_MixedBogiesWithViolation() {
+        List<GoodsBogie> list = Arrays.asList(
+                new GoodsBogie("Cylindrical", "Petroleum"),
+                new GoodsBogie("Cylindrical", "Coal") // violation
+        );
+
+        assertFalse(checkSafety(list));
+    }
+
+    @Test
+    void testSafety_EmptyBogieList() {
+        List<GoodsBogie> list = new ArrayList<>();
+
+        assertTrue(checkSafety(list));
     }
 }
