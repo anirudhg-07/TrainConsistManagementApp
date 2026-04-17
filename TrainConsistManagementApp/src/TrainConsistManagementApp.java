@@ -1,12 +1,17 @@
+import java.util.Arrays;
+
 public class TrainConsistManagementApp {
 
     public static void main(String[] args) {
 
         String[] bogieIds = {"BG101", "BG205", "BG309", "BG412", "BG550"};
 
-        String searchKey = "BG309";
+        // Ensure sorted data (precondition)
+        Arrays.sort(bogieIds);
 
-        boolean found = linearSearch(bogieIds, searchKey);
+        String searchKey = "BG412";
+
+        boolean found = binarySearch(bogieIds, searchKey);
 
         if (found) {
             System.out.println("Bogie ID " + searchKey + " FOUND in train consist.");
@@ -15,13 +20,26 @@ public class TrainConsistManagementApp {
         }
     }
 
-    // Linear Search Logic
-    public static boolean linearSearch(String[] arr, String key) {
+    // Binary Search Logic
+    public static boolean binarySearch(String[] arr, String key) {
 
-        for (String id : arr) {
+        int low = 0;
+        int high = arr.length - 1;
 
-            if (id.equals(key)) {
-                return true; // early termination
+        while (low <= high) {
+
+            int mid = (low + high) / 2;
+
+            int result = arr[mid].compareTo(key);
+
+            if (result == 0) {
+                return true; // found
+            }
+
+            if (result < 0) {
+                low = mid + 1; // search right half
+            } else {
+                high = mid - 1; // search left half
             }
         }
 

@@ -1,15 +1,27 @@
 import org.junit.jupiter.api.Test;
+import java.util.Arrays;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TrainConsistManagementAppTest {
 
-    public boolean linearSearch(String[] arr, String key) {
+    public boolean binarySearch(String[] arr, String key) {
 
-        for (String id : arr) {
-            if (id.equals(key)) {
-                return true;
-            }
+        int low = 0;
+        int high = arr.length - 1;
+
+        while (low <= high) {
+
+            int mid = (low + high) / 2;
+
+            int result = arr[mid].compareTo(key);
+
+            if (result == 0) return true;
+
+            if (result < 0) low = mid + 1;
+            else high = mid - 1;
         }
+
         return false;
     }
 
@@ -17,32 +29,36 @@ public class TrainConsistManagementAppTest {
     void testSearch_BogieFound() {
 
         String[] arr = {"BG101", "BG205", "BG309", "BG412", "BG550"};
+        Arrays.sort(arr);
 
-        assertTrue(linearSearch(arr, "BG309"));
+        assertTrue(binarySearch(arr, "BG309"));
     }
 
     @Test
     void testSearch_BogieNotFound() {
 
         String[] arr = {"BG101", "BG205", "BG309", "BG412", "BG550"};
+        Arrays.sort(arr);
 
-        assertFalse(linearSearch(arr, "BG999"));
+        assertFalse(binarySearch(arr, "BG999"));
     }
 
     @Test
     void testSearch_FirstElementMatch() {
 
         String[] arr = {"BG101", "BG205", "BG309", "BG412", "BG550"};
+        Arrays.sort(arr);
 
-        assertTrue(linearSearch(arr, "BG101"));
+        assertTrue(binarySearch(arr, "BG101"));
     }
 
     @Test
     void testSearch_LastElementMatch() {
 
         String[] arr = {"BG101", "BG205", "BG309", "BG412", "BG550"};
+        Arrays.sort(arr);
 
-        assertTrue(linearSearch(arr, "BG550"));
+        assertTrue(binarySearch(arr, "BG550"));
     }
 
     @Test
@@ -50,6 +66,6 @@ public class TrainConsistManagementAppTest {
 
         String[] arr = {"BG101"};
 
-        assertTrue(linearSearch(arr, "BG101"));
+        assertTrue(binarySearch(arr, "BG101"));
     }
 }
