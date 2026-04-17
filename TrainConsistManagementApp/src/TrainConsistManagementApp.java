@@ -2,7 +2,7 @@ import java.util.Arrays;
 
 public class TrainConsistManagementApp {
 
-    public static void main(String[] args) {
+        int n = arr.length;
 
         String[] bogieNames = {
                 "Sleeper",

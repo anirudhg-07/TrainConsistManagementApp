@@ -5,64 +5,65 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class TrainConsistManagementAppTest {
 
-    @Test
-    void testSort_BasicAlphabeticalSorting() {
+    public void bubbleSort(int[] arr) {
 
-        String[] arr = {"Sleeper", "AC Chair", "First Class", "General", "Luxury"};
+        int n = arr.length;
 
-        Arrays.sort(arr);
+        for (int i = 0; i < n - 1; i++) {
 
-        assertArrayEquals(
-                new String[]{"AC Chair", "First Class", "General", "Luxury", "Sleeper"},
-                arr
-        );
+            for (int j = 0; j < n - i - 1; j++) {
+
+                if (arr[j] > arr[j + 1]) {
+                    int temp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = temp;
+                }
+            }
+        }
     }
 
     @Test
-    void testSort_UnsortedInput() {
+    void testSort_BasicSorting() {
 
-        String[] arr = {"Luxury", "General", "Sleeper", "AC Chair"};
+        int[] arr = {72, 56, 24, 70, 60};
+        bubbleSort(arr);
 
-        Arrays.sort(arr);
-
-        assertArrayEquals(
-                new String[]{"AC Chair", "General", "Luxury", "Sleeper"},
-                arr
-        );
+        assertArrayEquals(new int[]{24, 56, 60, 70, 72}, arr);
     }
 
     @Test
     void testSort_AlreadySortedArray() {
 
-        String[] arr = {"AC Chair", "First Class", "General"};
+        int[] arr = {24, 56, 60, 70, 72};
+        bubbleSort(arr);
 
-        String[] copy = arr.clone();
-
-        Arrays.sort(arr);
-
-        assertArrayEquals(copy, arr);
+        assertArrayEquals(new int[]{24, 56, 60, 70, 72}, arr);
     }
 
     @Test
-    void testSort_DuplicateBogieNames() {
+    void testSort_DuplicateValues() {
 
-        String[] arr = {"Sleeper", "AC Chair", "Sleeper", "General"};
+        int[] arr = {72, 56, 56, 24};
+        bubbleSort(arr);
 
-        Arrays.sort(arr);
-
-        assertArrayEquals(
-                new String[]{"AC Chair", "General", "Sleeper", "Sleeper"},
-                arr
-        );
+        assertArrayEquals(new int[]{24, 56, 56, 72}, arr);
     }
 
     @Test
     void testSort_SingleElementArray() {
 
-        String[] arr = {"Sleeper"};
+        int[] arr = {50};
+        bubbleSort(arr);
 
-        Arrays.sort(arr);
+        assertArrayEquals(new int[]{50}, arr);
+    }
 
-        assertArrayEquals(new String[]{"Sleeper"}, arr);
+    @Test
+    void testSort_AllEqualValues() {
+
+        int[] arr = {40, 40, 40};
+        bubbleSort(arr);
+
+        assertArrayEquals(new int[]{40, 40, 40}, arr);
     }
 }
