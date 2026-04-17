@@ -1,35 +1,50 @@
-import java.util.*;
+import java.util.Scanner;
+import java.util.regex.*;
 
-class Bogie {
-    String type;
-    int capacity;
+public class TrainConsistManagementApp  {
 
-    public Bogie(String type, int capacity) {
-        this.type = type;
-        this.capacity = capacity;
-    }
-
-    public int getCapacity() {
-        return capacity;
-    }
-}
-
-public class TrainConsistManagementApp {
+    // Regex patterns
+    private static final String TRAIN_ID_REGEX = "TRN-\\d{4}";
+    private static final String CARGO_CODE_REGEX = "PET-[A-Z]{2}";
 
     public static void main(String[] args) {
 
-        List<Bogie> bogies = Arrays.asList(
-                new Bogie("Sleeper", 72),
-                new Bogie("AC Chair", 60),
-                new Bogie("Sleeper", 80),
-                new Bogie("First Class", 40)
-        );
+        Scanner sc = new Scanner(System.in);
 
-        // UC10: Total seat calculation
-        int totalSeats = bogies.stream()
-                .map(b -> b.getCapacity())     // extract capacity
-                .reduce(0, Integer::sum);      // aggregate
+        System.out.print("Enter Train ID: ");
+        String trainId = sc.nextLine();
 
-        System.out.println("Total Seating Capacity: " + totalSeats);
+        System.out.print("Enter Cargo Code: ");
+        String cargoCode = sc.nextLine();
+
+        boolean isTrainValid = validateTrainId(trainId);
+        boolean isCargoValid = validateCargoCode(cargoCode);
+
+        System.out.println("\nValidation Results:");
+
+        if (isTrainValid) {
+            System.out.println("Train ID is VALID");
+        } else {
+            System.out.println("Train ID is INVALID");
+        }
+
+        if (isCargoValid) {
+            System.out.println("Cargo Code is VALID");
+        } else {
+            System.out.println("Cargo Code is INVALID");
+        }
+    }
+
+    // Validation methods
+    public static boolean validateTrainId(String trainId) {
+        Pattern pattern = Pattern.compile(TRAIN_ID_REGEX);
+        Matcher matcher = pattern.matcher(trainId);
+        return matcher.matches();
+    }
+
+    public static boolean validateCargoCode(String cargoCode) {
+        Pattern pattern = Pattern.compile(CARGO_CODE_REGEX);
+        Matcher matcher = pattern.matcher(cargoCode);
+        return matcher.matches();
     }
 }
