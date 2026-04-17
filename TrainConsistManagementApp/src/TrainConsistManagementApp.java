@@ -1,5 +1,4 @@
 import java.util.*;
-import java.util.stream.Collectors;
 
 class Bogie {
     String type;
@@ -10,17 +9,8 @@ class Bogie {
         this.capacity = capacity;
     }
 
-    public String getType() {
-        return type;
-    }
-
     public int getCapacity() {
         return capacity;
-    }
-
-    @Override
-    public String toString() {
-        return "Bogie Type: " + type + ", Capacity: " + capacity;
     }
 }
 
@@ -32,21 +22,14 @@ public class TrainConsistManagementApp {
                 new Bogie("Sleeper", 72),
                 new Bogie("AC Chair", 60),
                 new Bogie("Sleeper", 80),
-                new Bogie("First Class", 40),
-                new Bogie("AC Chair", 65)
+                new Bogie("First Class", 40)
         );
 
-        System.out.println("=== Original Bogie List ===");
-        bogies.forEach(System.out::println);
+        // UC10: Total seat calculation
+        int totalSeats = bogies.stream()
+                .map(b -> b.getCapacity())     // extract capacity
+                .reduce(0, Integer::sum);      // aggregate
 
-        // UC9: Grouping by type
-        Map<String, List<Bogie>> groupedBogies = bogies.stream()
-                .collect(Collectors.groupingBy(Bogie::getType));
-
-        System.out.println("\n=== Grouped Bogies ===");
-        groupedBogies.forEach((type, list) -> {
-            System.out.println("\nType: " + type);
-            list.forEach(System.out::println);
-        });
+        System.out.println("Total Seating Capacity: " + totalSeats);
     }
 }
