@@ -3,65 +3,53 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class TrainConsistManagementAppTest {
 
-    public void bubbleSort(int[] arr) {
+    public boolean linearSearch(String[] arr, String key) {
 
-        int n = arr.length;
-
-        for (int i = 0; i < n - 1; i++) {
-
-            for (int j = 0; j < n - i - 1; j++) {
-
-                if (arr[j] > arr[j + 1]) {
-                    int temp = arr[j];
-                    arr[j] = arr[j + 1];
-                    arr[j + 1] = temp;
-                }
+        for (String id : arr) {
+            if (id.equals(key)) {
+                return true;
             }
         }
+        return false;
     }
 
     @Test
-    void testSort_BasicSorting() {
+    void testSearch_BogieFound() {
 
-        int[] arr = {72, 56, 24, 70, 60};
-        bubbleSort(arr);
+        String[] arr = {"BG101", "BG205", "BG309", "BG412", "BG550"};
 
-        assertArrayEquals(new int[]{24, 56, 60, 70, 72}, arr);
+        assertTrue(linearSearch(arr, "BG309"));
     }
 
     @Test
-    void testSort_AlreadySortedArray() {
+    void testSearch_BogieNotFound() {
 
-        int[] arr = {24, 56, 60, 70, 72};
-        bubbleSort(arr);
+        String[] arr = {"BG101", "BG205", "BG309", "BG412", "BG550"};
 
-        assertArrayEquals(new int[]{24, 56, 60, 70, 72}, arr);
+        assertFalse(linearSearch(arr, "BG999"));
     }
 
     @Test
-    void testSort_DuplicateValues() {
+    void testSearch_FirstElementMatch() {
 
-        int[] arr = {72, 56, 56, 24};
-        bubbleSort(arr);
+        String[] arr = {"BG101", "BG205", "BG309", "BG412", "BG550"};
 
-        assertArrayEquals(new int[]{24, 56, 56, 72}, arr);
+        assertTrue(linearSearch(arr, "BG101"));
     }
 
     @Test
-    void testSort_SingleElementArray() {
+    void testSearch_LastElementMatch() {
 
-        int[] arr = {50};
-        bubbleSort(arr);
+        String[] arr = {"BG101", "BG205", "BG309", "BG412", "BG550"};
 
-        assertArrayEquals(new int[]{50}, arr);
+        assertTrue(linearSearch(arr, "BG550"));
     }
 
     @Test
-    void testSort_AllEqualValues() {
+    void testSearch_SingleElementArray() {
 
-        int[] arr = {40, 40, 40};
-        bubbleSort(arr);
+        String[] arr = {"BG101"};
 
-        assertArrayEquals(new int[]{40, 40, 40}, arr);
+        assertTrue(linearSearch(arr, "BG101"));
     }
 }
