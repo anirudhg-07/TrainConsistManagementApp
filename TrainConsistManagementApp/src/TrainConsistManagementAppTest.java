@@ -1,54 +1,68 @@
 import org.junit.jupiter.api.Test;
+import java.util.Arrays;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TrainConsistManagementAppTest {
 
     @Test
-    void testCargo_SafeAssignment() {
-        GoodsBogie bogie = new GoodsBogie("Cylindrical");
+    void testSort_BasicAlphabeticalSorting() {
 
-        bogie.assignCargo("Petroleum");
+        String[] arr = {"Sleeper", "AC Chair", "First Class", "General", "Luxury"};
 
-        assertEquals("Petroleum", bogie.cargo);
+        Arrays.sort(arr);
+
+        assertArrayEquals(
+                new String[]{"AC Chair", "First Class", "General", "Luxury", "Sleeper"},
+                arr
+        );
     }
 
     @Test
-    void testCargo_UnsafeAssignmentHandled() {
-        GoodsBogie bogie = new GoodsBogie("Rectangular");
+    void testSort_UnsortedInput() {
 
-        bogie.assignCargo("Petroleum");
+        String[] arr = {"Luxury", "General", "Sleeper", "AC Chair"};
 
-        assertNull(bogie.cargo);
+        Arrays.sort(arr);
+
+        assertArrayEquals(
+                new String[]{"AC Chair", "General", "Luxury", "Sleeper"},
+                arr
+        );
     }
 
     @Test
-    void testCargo_CargoNotAssignedAfterFailure() {
-        GoodsBogie bogie = new GoodsBogie("Rectangular");
+    void testSort_AlreadySortedArray() {
 
-        bogie.assignCargo("Petroleum");
+        String[] arr = {"AC Chair", "First Class", "General"};
 
-        assertNotEquals("Petroleum", bogie.cargo);
+        String[] copy = arr.clone();
+
+        Arrays.sort(arr);
+
+        assertArrayEquals(copy, arr);
     }
 
     @Test
-    void testCargo_ProgramContinuesAfterException() {
-        GoodsBogie b1 = new GoodsBogie("Cylindrical");
-        GoodsBogie b2 = new GoodsBogie("Rectangular");
+    void testSort_DuplicateBogieNames() {
 
-        b1.assignCargo("Petroleum");
-        b2.assignCargo("Petroleum");
+        String[] arr = {"Sleeper", "AC Chair", "Sleeper", "General"};
 
-        // If program continues, both calls should complete execution
-        assertTrue(true);
+        Arrays.sort(arr);
+
+        assertArrayEquals(
+                new String[]{"AC Chair", "General", "Sleeper", "Sleeper"},
+                arr
+        );
     }
 
     @Test
-    void testCargo_FinallyBlockExecution() {
-        GoodsBogie bogie = new GoodsBogie("Rectangular");
+    void testSort_SingleElementArray() {
 
-        bogie.assignCargo("Petroleum");
+        String[] arr = {"Sleeper"};
 
-        // If method completes, finally block executed (no crash = pass)
-        assertTrue(true);
+        Arrays.sort(arr);
+
+        assertArrayEquals(new String[]{"Sleeper"}, arr);
     }
 }
