@@ -1,71 +1,49 @@
 import org.junit.jupiter.api.Test;
-import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TrainConsistManagementAppTest {
 
-    public boolean binarySearch(String[] arr, String key) {
+    public boolean searchBogie(String[] bogies, String key) {
 
-        int low = 0;
-        int high = arr.length - 1;
+        if (bogies == null || bogies.length == 0) {
+            throw new IllegalStateException("Train consist is empty. Search operation not allowed.");
+        }
 
-        while (low <= high) {
-
-            int mid = (low + high) / 2;
-
-            int result = arr[mid].compareTo(key);
-
-            if (result == 0) return true;
-
-            if (result < 0) low = mid + 1;
-            else high = mid - 1;
+        for (String id : bogies) {
+            if (id.equals(key)) {
+                return true;
+            }
         }
 
         return false;
     }
 
     @Test
-    void testSearch_BogieFound() {
+    void testSearch_EmptyTrainThrowsException() {
 
-        String[] arr = {"BG101", "BG205", "BG309", "BG412", "BG550"};
-        Arrays.sort(arr);
+        String[] bogies = {};
 
-        assertTrue(binarySearch(arr, "BG309"));
+        Exception ex = assertThrows(IllegalStateException.class, () -> {
+            searchBogie(bogies, "BG101");
+        });
+
+        assertEquals("Train consist is empty. Search operation not allowed.", ex.getMessage());
     }
 
     @Test
-    void testSearch_BogieNotFound() {
+    void testSearch_NonEmptyTrainWorks() {
 
-        String[] arr = {"BG101", "BG205", "BG309", "BG412", "BG550"};
-        Arrays.sort(arr);
+        String[] bogies = {"BG101", "BG205", "BG309"};
 
-        assertFalse(binarySearch(arr, "BG999"));
+        assertTrue(searchBogie(bogies, "BG205"));
     }
 
     @Test
-    void testSearch_FirstElementMatch() {
+    void testSearch_NotFound() {
 
-        String[] arr = {"BG101", "BG205", "BG309", "BG412", "BG550"};
-        Arrays.sort(arr);
+        String[] bogies = {"BG101", "BG205", "BG309"};
 
-        assertTrue(binarySearch(arr, "BG101"));
-    }
-
-    @Test
-    void testSearch_LastElementMatch() {
-
-        String[] arr = {"BG101", "BG205", "BG309", "BG412", "BG550"};
-        Arrays.sort(arr);
-
-        assertTrue(binarySearch(arr, "BG550"));
-    }
-
-    @Test
-    void testSearch_SingleElementArray() {
-
-        String[] arr = {"BG101"};
-
-        assertTrue(binarySearch(arr, "BG101"));
+        assertFalse(searchBogie(bogies, "BG999"));
     }
 }
