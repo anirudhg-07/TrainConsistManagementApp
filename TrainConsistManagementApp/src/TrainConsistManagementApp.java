@@ -1,45 +1,39 @@
-import java.util.Arrays;
-
 public class TrainConsistManagementApp {
 
     public static void main(String[] args) {
 
-        String[] bogieIds = {"BG101", "BG205", "BG309", "BG412", "BG550"};
+        String[] bogieIds = {}; // empty train
 
-        // Ensure sorted data (precondition)
-        Arrays.sort(bogieIds);
+        String searchKey = "BG101";
 
-        String searchKey = "BG412";
+        try {
+            boolean result = searchBogie(bogieIds, searchKey);
 
-        boolean found = binarySearch(bogieIds, searchKey);
-
-        if (found) {
-            System.out.println("Bogie ID " + searchKey + " FOUND in train consist.");
-        } else {
-            System.out.println("Bogie ID " + searchKey + " NOT FOUND in train consist.");
-        }
-    }
-
-    // Binary Search Logic
-    public static boolean binarySearch(String[] arr, String key) {
-
-        int low = 0;
-        int high = arr.length - 1;
-
-        while (low <= high) {
-
-            int mid = (low + high) / 2;
-
-            int result = arr[mid].compareTo(key);
-
-            if (result == 0) {
-                return true; // found
+            if (result) {
+                System.out.println("Bogie ID " + searchKey + " FOUND in train consist.");
+            } else {
+                System.out.println("Bogie ID " + searchKey + " NOT FOUND in train consist.");
             }
 
-            if (result < 0) {
-                low = mid + 1; // search right half
-            } else {
-                high = mid - 1; // search left half
+        } catch (IllegalStateException e) {
+            System.out.println("Exception Occurred: " + e.getMessage());
+        }
+
+        System.out.println("Program continues safely...");
+    }
+
+    // Search method with fail-fast validation
+    public static boolean searchBogie(String[] bogies, String key) {
+
+        // UC20: Defensive check
+        if (bogies == null || bogies.length == 0) {
+            throw new IllegalStateException("Train consist is empty. Search operation not allowed.");
+        }
+
+        // simple linear search (can be UC18/UC19 integrated)
+        for (String id : bogies) {
+            if (id.equals(key)) {
+                return true;
             }
         }
 
