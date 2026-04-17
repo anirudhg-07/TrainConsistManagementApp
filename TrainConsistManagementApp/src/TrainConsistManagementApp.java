@@ -2,42 +2,29 @@ public class TrainConsistManagementApp {
 
     public static void main(String[] args) {
 
-        int[] capacities = {72, 56, 24, 70, 60};
+        String[] bogieIds = {"BG101", "BG205", "BG309", "BG412", "BG550"};
 
-        System.out.println("Original Capacities:");
-        printArray(capacities);
+        String searchKey = "BG309";
 
-        bubbleSort(capacities);
+        boolean found = linearSearch(bogieIds, searchKey);
 
-        System.out.println("\nSorted Capacities (Ascending):");
-        printArray(capacities);
+        if (found) {
+            System.out.println("Bogie ID " + searchKey + " FOUND in train consist.");
+        } else {
+            System.out.println("Bogie ID " + searchKey + " NOT FOUND in train consist.");
+        }
     }
 
-    // Bubble Sort Logic
-    public static void bubbleSort(int[] arr) {
+    // Linear Search Logic
+    public static boolean linearSearch(String[] arr, String key) {
 
-        int n = arr.length;
+        for (String id : arr) {
 
-        for (int i = 0; i < n - 1; i++) {
-
-            for (int j = 0; j < n - i - 1; j++) {
-
-                if (arr[j] > arr[j + 1]) {
-
-                    // swap
-                    int temp = arr[j];
-                    arr[j] = arr[j + 1];
-                    arr[j + 1] = temp;
-                }
+            if (id.equals(key)) {
+                return true; // early termination
             }
         }
-    }
 
-    // Utility method to print array
-    public static void printArray(int[] arr) {
-        for (int val : arr) {
-            System.out.print(val + " ");
-        }
-        System.out.println();
+        return false;
     }
 }
