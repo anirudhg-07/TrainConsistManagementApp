@@ -1,46 +1,52 @@
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
-// Bogie class
 class Bogie {
-    String name;
+    String type;
     int capacity;
 
-    Bogie(String name, int capacity) {
-        this.name = name;
+    public Bogie(String type, int capacity) {
+        this.type = type;
         this.capacity = capacity;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public int getCapacity() {
+        return capacity;
     }
 
     @Override
     public String toString() {
-        return name + " -> Capacity: " + capacity;
+        return "Bogie Type: " + type + ", Capacity: " + capacity;
     }
 }
 
 public class TrainConsistManagementApp {
 
-    // Method for filtering (IMPORTANT for test cases)
-    public List<Bogie> filterBogiesByCapacity(List<Bogie> bogies, int threshold) {
-        return bogies.stream()
-                .filter(b -> b.capacity > threshold)
-                .collect(Collectors.toList());
-    }
-
     public static void main(String[] args) {
 
-        TrainConsistManagementApp app = new TrainConsistManagementApp();
+        List<Bogie> bogies = Arrays.asList(
+                new Bogie("Sleeper", 72),
+                new Bogie("AC Chair", 60),
+                new Bogie("Sleeper", 80),
+                new Bogie("First Class", 40),
+                new Bogie("AC Chair", 65)
+        );
 
-        List<Bogie> bogies = new ArrayList<>();
-        bogies.add(new Bogie("Sleeper", 72));
-        bogies.add(new Bogie("AC Chair", 56));
-        bogies.add(new Bogie("First Class", 24));
+        System.out.println("=== Original Bogie List ===");
+        bogies.forEach(System.out::println);
 
-        // Apply filter
-        List<Bogie> filtered = app.filterBogiesByCapacity(bogies, 60);
+        // UC9: Grouping by type
+        Map<String, List<Bogie>> groupedBogies = bogies.stream()
+                .collect(Collectors.groupingBy(Bogie::getType));
 
-        // Display result
-        System.out.println("Filtered Bogies (Capacity > 60):");
-        filtered.forEach(System.out::println);
+        System.out.println("\n=== Grouped Bogies ===");
+        groupedBogies.forEach((type, list) -> {
+            System.out.println("\nType: " + type);
+            list.forEach(System.out::println);
+        });
     }
 }
